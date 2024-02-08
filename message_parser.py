@@ -1,5 +1,5 @@
 from model.single_search_request import SingleSearchRequest
-from util.dates_processing import convert_date_to_default_format
+from processing.dates_processing import convert_date_to_default_format
 
 def parse_raw_single_search_request(src) -> SingleSearchRequest:
     try:
