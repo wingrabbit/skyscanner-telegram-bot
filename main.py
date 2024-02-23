@@ -18,12 +18,15 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 def background_check():
     while(True):
-        done_requests = check_done_requests()
-        for raw_request in done_requests:
-            bot.send_message(raw_request["chat_id"], f'DONE: {raw_request["request"]}')
-            update_raw_request(raw_request["id"], 'SENT', raw_request["search_id"])
-            prices = get_best_prices(raw_request["search_id"])
-            bot.send_message(raw_request["chat_id"], best_prices_text(prices))
+        try:
+            done_requests = check_done_requests()
+            for raw_request in done_requests:
+                prices = get_best_prices(raw_request["search_id"])
+                bot.send_message(raw_request["chat_id"], f'DONE: {raw_request["request"]}')
+                bot.send_message(raw_request["chat_id"], best_prices_text(prices))
+                update_raw_request(raw_request["id"], 'SENT', raw_request["search_id"])
+        except Exception as e:
+            print('Error occured: ', e)
         time.sleep(1)
 
 @bot.message_handler(func=lambda msg: True)
